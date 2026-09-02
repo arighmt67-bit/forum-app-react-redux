@@ -4,3 +4,8 @@ dist-ssr
 .DS_Store
 *.local
 .env
+
+storybook-static
+cypress/screenshots
+cypress/videos
+*.zip

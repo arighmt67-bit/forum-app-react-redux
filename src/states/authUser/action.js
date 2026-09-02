@@ -29,6 +29,10 @@ function asyncSetAuthUser({ email, password }) {
       api.putAccessToken(token);
       const authUser = await api.getOwnProfile();
       dispatch(setAuthUserActionCreator(authUser));
+      return true;
+    } catch (error) {
+      window.alert(error.message);
+      return false;
     } finally {
       dispatch(hideLoading());
     }
@@ -48,6 +52,10 @@ function asyncRegisterUser({ name, email, password }) {
 
     try {
       await api.register({ name, email, password });
+      return true;
+    } catch (error) {
+      window.alert(error.message);
+      return false;
     } finally {
       dispatch(hideLoading());
     }

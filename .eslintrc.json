@@ -40,11 +40,22 @@
       {
         "assert": "either"
       }
-    ]
+    ],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true
+      }
+    ],
+    "no-underscore-dangle": "off"
   },
   "ignorePatterns": [
     "dist",
     "node_modules",
-    "vite.config.js"
+    "vite.config.js",
+    "cypress.config.js",
+    "cypress",
+    ".storybook",
+    "storybook-static"
   ]
 }
