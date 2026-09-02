@@ -12,7 +12,33 @@
 describe('Login spec', () => {
   beforeEach(() => {
     cy.clearLocalStorage();
+
+    // Stub dipasang SEBELUM cy.visit agar proses preload aplikasi bersifat
+    // deterministik. Tanpa ini, App menjalankan asyncPreloadProcess() ke API
+    // sungguhan; selama preload berjalan App merender PreloadTemplate yang tidak
+    // memuat navigasi, lalu menggantinya dengan AppLayout setelah selesai.
+    // Pergantian tersebut melepas elemen tautan dari DOM di tengah perintah
+    // Cypress dan memunculkan kegagalan "element has detached from DOM".
+    cy.intercept('GET', '**/users/me', {
+      statusCode: 401,
+      body: { status: 'fail', message: 'Missing authentication' },
+    }).as('preloadRequest');
+
+    cy.intercept('GET', '**/threads', {
+      statusCode: 200,
+      body: { status: 'success', message: 'ok', data: { threads: [] } },
+    }).as('threadsRequest');
+
+    cy.intercept('GET', '**/users', {
+      statusCode: 200,
+      body: { status: 'success', message: 'ok', data: { users: [] } },
+    }).as('usersRequest');
+
     cy.visit('/');
+
+    // Tunggu preload selesai supaya AppLayout sudah stabil sebelum diuji.
+    cy.wait('@preloadRequest');
+    cy.get('a[href="#/login"]').should('be.visible');
   });
 
   it('should display login page correctly', () => {
@@ -50,7 +76,7 @@ describe('Login spec', () => {
   });
 
   it('should display homepage when email and password are correct', () => {
-    // arrange: stub login + profil pengguna + data beranda
+    // arrange: stub login + profil pengguna
     cy.intercept('POST', '**/login', {
       statusCode: 200,
       body: {
@@ -60,6 +86,7 @@ describe('Login spec', () => {
       },
     }).as('loginRequest');
 
+    // Menimpa stub preload: setelah login, permintaan profil harus berhasil.
     cy.intercept('GET', '**/users/me', {
       statusCode: 200,
       body: {
