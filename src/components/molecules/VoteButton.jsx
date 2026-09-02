@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Button from '../atoms/Button';
 
 function VoteButton({
   upVotesBy, downVotesBy, authUserId = null, onUpVote, onDownVote,
@@ -9,24 +10,22 @@ function VoteButton({
 
   return (
     <div className="vote-button">
-      <button
-        type="button"
-        aria-label="up vote"
+      <Button
+        ariaLabel="up vote"
         className={`vote-button__item ${isUpVoted ? 'vote-button__item--up-active' : ''}`}
         onClick={onUpVote}
       >
         &#9650;
         <span>{upVotesBy.length}</span>
-      </button>
-      <button
-        type="button"
-        aria-label="down vote"
+      </Button>
+      <Button
+        ariaLabel="down vote"
         className={`vote-button__item ${isDownVoted ? 'vote-button__item--down-active' : ''}`}
         onClick={onDownVote}
       >
         &#9660;
         <span>{downVotesBy.length}</span>
-      </button>
+      </Button>
     </div>
   );
 }

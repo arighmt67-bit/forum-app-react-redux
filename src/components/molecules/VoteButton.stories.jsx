@@ -1,7 +1,7 @@
 import VoteButton from './VoteButton';
 
 const meta = {
-  title: 'Components/VoteButton',
+  title: 'Molecules/VoteButton',
   component: VoteButton,
   tags: ['autodocs'],
   argTypes: {

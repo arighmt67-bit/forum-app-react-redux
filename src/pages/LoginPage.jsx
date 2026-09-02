@@ -1,7 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import LoginInput from '../components/LoginInput';
+import { useNavigate } from 'react-router-dom';
+import AuthTemplate from '../components/templates/AuthTemplate';
+import LoginInput from '../components/organisms/LoginInput';
 import { asyncSetAuthUser } from '../states/authUser/action';
 
 function LoginPage() {
@@ -18,15 +19,14 @@ function LoginPage() {
   };
 
   return (
-    <section className="auth-page">
-      <h2>Masuk</h2>
+    <AuthTemplate
+      title="Masuk"
+      hintText="Belum punya akun?"
+      hintLinkTo="/register"
+      hintLinkLabel="Daftar di sini"
+    >
       <LoginInput login={onLogin} />
-      <p className="auth-page__hint">
-        Belum punya akun?
-        {' '}
-        <Link to="/register">Daftar di sini</Link>
-      </p>
-    </section>
+    </AuthTemplate>
   );
 }
 

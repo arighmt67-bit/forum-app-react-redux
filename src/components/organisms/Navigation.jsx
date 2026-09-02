@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import NavigationMenu from '../molecules/NavigationMenu';
+import UserProfile from '../molecules/UserProfile';
+import Button from '../atoms/Button';
 
 function Navigation({ authUser = null, onSignOut }) {
   return (
@@ -10,19 +13,17 @@ function Navigation({ authUser = null, onSignOut }) {
           Forum
           <span>Diskusi</span>
         </Link>
-        <nav className="navigation__menu">
-          <NavLink to="/" end>
-            Threads
-          </NavLink>
-          <NavLink to="/leaderboards">Leaderboard</NavLink>
-        </nav>
+        <NavigationMenu />
         {authUser ? (
           <div className="navigation__user">
-            <img src={authUser.avatar} alt={authUser.name} className="avatar" />
-            <span className="navigation__user-name">{authUser.name}</span>
-            <button type="button" className="button button--ghost" onClick={onSignOut}>
+            <UserProfile
+              name={authUser.name}
+              avatar={authUser.avatar}
+              className="navigation__user-name"
+            />
+            <Button className="button button--ghost" onClick={onSignOut}>
               Keluar
-            </button>
+            </Button>
           </div>
         ) : (
           <div className="navigation__user">

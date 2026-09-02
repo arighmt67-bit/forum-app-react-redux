@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import ThreadDetail from '../components/ThreadDetail';
-import CommentList from '../components/CommentList';
-import CommentInput from '../components/CommentInput';
+import ThreadDetailTemplate from '../components/templates/ThreadDetailTemplate';
+import EmptyState from '../components/atoms/EmptyState';
 import {
   asyncReceiveThreadDetail,
   asyncAddComment,
@@ -25,7 +24,7 @@ function ThreadDetailPage() {
   }, [id, dispatch]);
 
   if (threadDetail === null) {
-    return <p className="empty-state">Memuat diskusi...</p>;
+    return <EmptyState message="Memuat diskusi..." />;
   }
 
   const requireAuth = () => {
@@ -66,30 +65,16 @@ function ThreadDetailPage() {
   };
 
   return (
-    <section className="thread-detail-page">
-      <ThreadDetail
-        {...threadDetail}
-        authUserId={authUser ? authUser.id : null}
-        onUpVote={() => onThreadVote('up')}
-        onDownVote={() => onThreadVote('down')}
-      />
-      <h3 className="section-title">
-        Komentar (
-        {threadDetail.comments.length}
-        )
-      </h3>
-      {authUser ? (
-        <CommentInput onSubmit={onAddComment} />
-      ) : (
-        <p className="empty-state">Masuk terlebih dahulu untuk berkomentar.</p>
-      )}
-      <CommentList
-        comments={threadDetail.comments}
-        authUserId={authUser ? authUser.id : null}
-        onUpVote={(commentId) => onCommentVote(commentId, 'up')}
-        onDownVote={(commentId) => onCommentVote(commentId, 'down')}
-      />
-    </section>
+    <ThreadDetailTemplate
+      threadDetail={threadDetail}
+      authUserId={authUser ? authUser.id : null}
+      isLoggedIn={authUser !== null}
+      onThreadUpVote={() => onThreadVote('up')}
+      onThreadDownVote={() => onThreadVote('down')}
+      onCommentUpVote={(commentId) => onCommentVote(commentId, 'up')}
+      onCommentDownVote={(commentId) => onCommentVote(commentId, 'down')}
+      onAddComment={onAddComment}
+    />
   );
 }
 

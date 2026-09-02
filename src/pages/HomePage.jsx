@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import ThreadList from '../components/ThreadList';
-import CategoryFilter from '../components/CategoryFilter';
+import HomeTemplate from '../components/templates/HomeTemplate';
 import { asyncToggleVoteThread } from '../states/threads/action';
 import asyncPopulateUsersAndThreads from '../states/shared/action';
 import { setCategoryFilterActionCreator } from '../states/categoryFilter/action';
@@ -51,32 +50,16 @@ function HomePage() {
   };
 
   return (
-    <section className="home-page">
-      <div className="home-page__header">
-        <h1>Diskusi Terbaru</h1>
-        <p>Ikuti percakapan hangat dari komunitas Dicoding.</p>
-      </div>
-      <CategoryFilter
-        categories={categories}
-        activeCategory={categoryFilter}
-        onSelect={onCategorySelect}
-      />
-      <ThreadList
-        threads={filteredThreads}
-        authUserId={authUser ? authUser.id : null}
-        onUpVote={(id) => onVote(id, 'up')}
-        onDownVote={(id) => onVote(id, 'down')}
-        onCategoryClick={onCategorySelect}
-      />
-      <button
-        type="button"
-        className="fab"
-        aria-label="buat thread baru"
-        onClick={() => navigate(authUser ? '/new' : '/login')}
-      >
-        +
-      </button>
-    </section>
+    <HomeTemplate
+      threads={filteredThreads}
+      categories={categories}
+      activeCategory={categoryFilter}
+      authUserId={authUser ? authUser.id : null}
+      onCategorySelect={onCategorySelect}
+      onUpVote={(id) => onVote(id, 'up')}
+      onDownVote={(id) => onVote(id, 'down')}
+      onCreateThread={() => navigate(authUser ? '/new' : '/login')}
+    />
   );
 }
 
