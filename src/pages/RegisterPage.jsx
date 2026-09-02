@@ -1,7 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import RegisterInput from '../components/RegisterInput';
+import { useNavigate } from 'react-router-dom';
+import AuthTemplate from '../components/templates/AuthTemplate';
+import RegisterInput from '../components/organisms/RegisterInput';
 import { asyncRegisterUser } from '../states/authUser/action';
 
 function RegisterPage() {
@@ -18,15 +19,14 @@ function RegisterPage() {
   };
 
   return (
-    <section className="auth-page">
-      <h2>Daftar Akun</h2>
+    <AuthTemplate
+      title="Daftar Akun"
+      hintText="Sudah punya akun?"
+      hintLinkTo="/login"
+      hintLinkLabel="Masuk di sini"
+    >
       <RegisterInput register={onRegister} />
-      <p className="auth-page__hint">
-        Sudah punya akun?
-        {' '}
-        <Link to="/login">Masuk di sini</Link>
-      </p>
-    </section>
+    </AuthTemplate>
   );
 }
 

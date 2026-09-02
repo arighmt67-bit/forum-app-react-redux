@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import useInput from '../hooks/useInput';
+import FormField from '../molecules/FormField';
+import Button from '../atoms/Button';
+import useInput from '../../hooks/useInput';
 
 function RegisterInput({ register }) {
   const [name, onNameChange] = useInput('');
@@ -14,20 +16,25 @@ function RegisterInput({ register }) {
 
   return (
     <form className="auth-form" onSubmit={handleSubmit}>
-      <label htmlFor="name">Nama</label>
-      <input id="name" type="text" value={name} onChange={onNameChange} required />
-      <label htmlFor="email">Email</label>
-      <input id="email" type="email" value={email} onChange={onEmailChange} required />
-      <label htmlFor="password">Kata sandi</label>
-      <input
+      <FormField id="name" label="Nama" value={name} onChange={onNameChange} required />
+      <FormField
+        id="email"
+        label="Email"
+        type="email"
+        value={email}
+        onChange={onEmailChange}
+        required
+      />
+      <FormField
         id="password"
+        label="Kata sandi"
         type="password"
         value={password}
         onChange={onPasswordChange}
         minLength={6}
         required
       />
-      <button type="submit" className="button button--block">Daftar</button>
+      <Button isSubmit className="button button--block">Daftar</Button>
     </form>
   );
 }

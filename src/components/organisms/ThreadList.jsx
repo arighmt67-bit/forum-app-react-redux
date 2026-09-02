@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ThreadItem from './ThreadItem';
+import EmptyState from '../atoms/EmptyState';
 
 const threadShape = PropTypes.shape({
   id: PropTypes.string.isRequired,
@@ -21,7 +22,7 @@ function ThreadList({
   threads, authUserId = null, onUpVote, onDownVote, onCategoryClick,
 }) {
   if (threads.length === 0) {
-    return <p className="empty-state">Belum ada diskusi pada kategori ini.</p>;
+    return <EmptyState message="Belum ada diskusi pada kategori ini." />;
   }
 
   return (

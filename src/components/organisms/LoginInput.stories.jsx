@@ -1,7 +1,7 @@
 import LoginInput from './LoginInput';
 
 const meta = {
-  title: 'Components/LoginInput',
+  title: 'Organisms/LoginInput',
   component: LoginInput,
   tags: ['autodocs'],
   argTypes: {

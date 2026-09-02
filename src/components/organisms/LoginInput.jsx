@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import useInput from '../hooks/useInput';
+import FormField from '../molecules/FormField';
+import Button from '../atoms/Button';
+import useInput from '../../hooks/useInput';
 
 function LoginInput({ login }) {
   const [email, onEmailChange] = useInput('');
@@ -13,17 +15,23 @@ function LoginInput({ login }) {
 
   return (
     <form className="auth-form" onSubmit={handleSubmit}>
-      <label htmlFor="email">Email</label>
-      <input id="email" type="email" value={email} onChange={onEmailChange} required />
-      <label htmlFor="password">Kata sandi</label>
-      <input
+      <FormField
+        id="email"
+        label="Email"
+        type="email"
+        value={email}
+        onChange={onEmailChange}
+        required
+      />
+      <FormField
         id="password"
+        label="Kata sandi"
         type="password"
         value={password}
         onChange={onPasswordChange}
         required
       />
-      <button type="submit" className="button button--block">Masuk</button>
+      <Button isSubmit className="button button--block">Masuk</Button>
     </form>
   );
 }

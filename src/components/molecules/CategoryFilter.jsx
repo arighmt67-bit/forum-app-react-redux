@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Badge from '../atoms/Badge';
 
 function CategoryFilter({ categories, activeCategory, onSelect }) {
   if (categories.length === 0) {
@@ -11,15 +12,12 @@ function CategoryFilter({ categories, activeCategory, onSelect }) {
       <span className="category-filter__label">Kategori populer</span>
       <div className="category-filter__items">
         {categories.map((category) => (
-          <button
+          <Badge
             key={category}
-            type="button"
-            className={`badge ${activeCategory === category ? 'badge--active' : ''}`}
+            label={category}
+            active={activeCategory === category}
             onClick={() => onSelect(category)}
-          >
-            #
-            {category}
-          </button>
+          />
         ))}
       </div>
     </div>

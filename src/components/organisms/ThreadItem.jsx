@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, useNavigate } from 'react-router-dom';
-import VoteButton from './VoteButton';
-import { postedAt, truncate } from '../utils';
+import Badge from '../atoms/Badge';
+import Button from '../atoms/Button';
+import VoteButton from '../molecules/VoteButton';
+import UserProfile from '../molecules/UserProfile';
+import { postedAt, truncate } from '../../utils';
 
 function ThreadItem({
   id, title, body, category, createdAt, upVotesBy, downVotesBy, totalComments,
@@ -13,14 +16,7 @@ function ThreadItem({
   return (
     <article className="thread-item">
       <div className="thread-item__header">
-        <button
-          type="button"
-          className="badge"
-          onClick={() => onCategoryClick(category)}
-        >
-          #
-          {category}
-        </button>
+        <Badge label={category} onClick={() => onCategoryClick(category)} />
         <span className="thread-item__date">{postedAt(createdAt)}</span>
       </div>
       <h3 className="thread-item__title">
@@ -35,19 +31,19 @@ function ThreadItem({
           onUpVote={() => onUpVote(id)}
           onDownVote={() => onDownVote(id)}
         />
-        <button
-          type="button"
+        <Button
           className="thread-item__comments"
           onClick={() => navigate(`/threads/${id}`)}
         >
           {totalComments}
           {' '}
           komentar
-        </button>
-        <div className="thread-item__owner">
-          <img src={owner.avatar} alt={owner.name} className="avatar avatar--small" />
-          <span>{owner.name}</span>
-        </div>
+        </Button>
+        <UserProfile
+          name={owner.name}
+          avatar={owner.avatar}
+          className="thread-item__owner"
+        />
       </footer>
     </article>
   );

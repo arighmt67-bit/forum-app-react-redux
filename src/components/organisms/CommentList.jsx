@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CommentItem from './CommentItem';
+import EmptyState from '../atoms/EmptyState';
 
 const commentShape = PropTypes.shape({
   id: PropTypes.string.isRequired,
@@ -18,7 +19,7 @@ function CommentList({
   comments, authUserId = null, onUpVote, onDownVote,
 }) {
   if (comments.length === 0) {
-    return <p className="empty-state">Belum ada komentar. Jadilah yang pertama!</p>;
+    return <EmptyState message="Belum ada komentar. Jadilah yang pertama!" />;
   }
 
   return (

@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import useInput from '../hooks/useInput';
+import TextAreaField from '../molecules/TextAreaField';
+import Button from '../atoms/Button';
+import useInput from '../../hooks/useInput';
 
 function CommentInput({ onSubmit }) {
   const [content, onContentChange, setContent] = useInput('');
@@ -18,15 +20,14 @@ function CommentInput({ onSubmit }) {
 
   return (
     <form className="comment-input" onSubmit={handleSubmit}>
-      <label htmlFor="comment">Beri komentar</label>
-      <textarea
+      <TextAreaField
         id="comment"
-        rows="4"
+        label="Beri komentar"
         value={content}
         onChange={onContentChange}
         placeholder="Tulis komentarmu di sini..."
       />
-      <button type="submit" className="button">Kirim</button>
+      <Button isSubmit>Kirim</Button>
     </form>
   );
 }

@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import VoteButton from './VoteButton';
-import { postedAt, stripHtml } from '../utils';
+import Badge from '../atoms/Badge';
+import VoteButton from '../molecules/VoteButton';
+import UserProfile from '../molecules/UserProfile';
+import { postedAt, stripHtml } from '../../utils';
 
 function ThreadDetail({
   title, body, category, createdAt, owner, upVotesBy, downVotesBy,
@@ -9,17 +11,15 @@ function ThreadDetail({
 }) {
   return (
     <section className="thread-detail">
-      <span className="badge">
-        #
-        {category}
-      </span>
+      <Badge label={category} />
       <h2 className="thread-detail__title">{title}</h2>
       <div className="thread-detail__body">{stripHtml(body)}</div>
       <div className="thread-detail__meta">
-        <div className="thread-detail__owner">
-          <img src={owner.avatar} alt={owner.name} className="avatar avatar--small" />
-          <span>{owner.name}</span>
-        </div>
+        <UserProfile
+          name={owner.name}
+          avatar={owner.avatar}
+          className="thread-detail__owner"
+        />
         <span className="thread-detail__date">{postedAt(createdAt)}</span>
       </div>
       <VoteButton

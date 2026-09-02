@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Avatar from '../atoms/Avatar';
 
 function LeaderboardItem({ user, score, rank }) {
   return (
     <li className="leaderboard-item">
       <span className="leaderboard-item__rank">{rank}</span>
-      <img src={user.avatar} alt={user.name} className="avatar avatar--small" />
+      <Avatar src={user.avatar} alt={user.name} small />
       <span className="leaderboard-item__name">{user.name}</span>
       <span className="leaderboard-item__score">{score}</span>
     </li>

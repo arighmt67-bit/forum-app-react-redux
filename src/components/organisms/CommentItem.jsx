@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import VoteButton from './VoteButton';
-import { postedAt, stripHtml } from '../utils';
+import VoteButton from '../molecules/VoteButton';
+import UserProfile from '../molecules/UserProfile';
+import { postedAt, stripHtml } from '../../utils';
 
 function CommentItem({
   id, content, createdAt, owner, upVotesBy, downVotesBy,
@@ -10,10 +11,11 @@ function CommentItem({
   return (
     <article className="comment-item">
       <header className="comment-item__header">
-        <div className="comment-item__owner">
-          <img src={owner.avatar} alt={owner.name} className="avatar avatar--small" />
-          <strong>{owner.name}</strong>
-        </div>
+        <UserProfile
+          name={owner.name}
+          avatar={owner.avatar}
+          className="comment-item__owner"
+        />
         <span className="comment-item__date">{postedAt(createdAt)}</span>
       </header>
       <p className="comment-item__content">{stripHtml(content)}</p>
