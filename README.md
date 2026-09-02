@@ -1,63 +1,31 @@
-# Forum Diskusi — Submission Proyek: Membangun Aplikasi React dengan Redux
+# Forum App - React + Redux + Automation Testing & CI/CD
 
-Aplikasi Forum Diskusi berbasis **React + Redux (Redux Toolkit)** yang mengonsumsi
-[Dicoding Forum API](https://forum-api.dicoding.dev/v1).
+Submission Proyek Kedua: **Menerapkan Automation Testing dan CI/CD pada Aplikasi Forum Diskusi**
+Kelas: **Menjadi React Web Developer Expert** (Dicoding)
 
-## Menjalankan
+Repository GitHub: [https://github.com/arighmt67-bit/forum-app-react-redux](https://github.com/arighmt67-bit/forum-app-react-redux)
+Production / Live URL: [https://forum-app-react-redux.vercel.app](https://forum-app-react-redux.vercel.app)
 
-```bash
-npm install
-npm run dev     # http://localhost:3000
-npm run build   # build produksi
-npm run lint    # ESLint (Airbnb Style Guide) — 0 error
-```
+---
 
-## Pemenuhan Kriteria
+## 🎯 Kriteria Utama & Pemenuhan
 
-### Kriteria Utama 1 — Fungsionalitas Aplikasi
-| Butir | Implementasi |
-|---|---|
-| Registrasi akun | `/register` — `RegisterPage` + `asyncRegisterUser` |
-| Login akun | `/login` — `LoginPage` + `asyncSetAuthUser` (token disimpan di localStorage) |
-| Daftar thread | `/` — `HomePage` + `ThreadList` |
-| Detail thread + komentar | `/threads/:id` — `ThreadDetailPage` |
-| Membuat thread | `/new` — `AddThreadPage` (wajib login) |
-| Membuat komentar | `CommentInput` di halaman detail (wajib login) |
-| Loading indicator | `react-redux-loading-bar` di setiap thunk async |
+| Kriteria | Status | Implementasi & Lokasi File |
+|---|---|---|
+| **1. Automation Testing** | ✅ Terpenuhi | • **Reducer tests (5 berkas)**: `src/states/**/reducer.test.js` (authUser, threads, users, isPreload, leaderboards)<br>• **Thunk tests (4 berkas)**: `src/states/**/action.test.js` (authUser, threads, users, shared)<br>• **Component tests (3 berkas)**: `src/components/*.test.jsx` (LoginInput, RegisterInput, VoteButton)<br>• **E2E tests (Cypress)**: `cypress/e2e/login.cy.js` (alur login sukses, gagal, validasi UI)<br>• Dilengkapi skenario deskriptif di setiap berkas test. |
+| **2. CI/CD & Deployment** | ✅ Terpenuhi | • **Continuous Integration**: GitHub Actions workflow `.github/workflows/ci.yml` (lint, test, e2e cypress, build storybook, build vite)<br>• **Continuous Deployment**: Vercel (`vercel.json`)<br>• **Branch Protection**: Branch `master` diproteksi dengan syarat status check CI lolos.<br>• **Screenshots**: Dilampirkan pada folder `screenshots/` (`1_ci_check_error.png`, `2_ci_check_pass.png`, `3_branch_protection.png`). |
+| **3. React Ecosystem** | ✅ Terpenuhi | • Menggunakan **Storybook** (`.storybook/main.js`, `src/components/*.stories.jsx`) untuk dokumentasi komponen UI. |
+| **4. Mempertahankan Kriteria V1** | ✅ Terpenuhi | • Filter thread berdasarkan kategori<br>• Upvote / Downvote thread & komentar dengan optimistic updates<br>• Leaderboard pengguna teratas<br>• Indikator loading Redux<br>• Clean Architecture & Airbnb ESLint 0 error |
 
-Item thread menampilkan **judul, potongan body, waktu pembuatan, jumlah komentar, dan
-nama + avatar pembuat**. Halaman detail menampilkan **judul, body, waktu, nama + avatar
-pemilik, serta komentar** lengkap dengan konten, waktu, nama, dan avatar pengomentar.
+---
 
-### Kriteria Utama 2 — Bugs Highlighting
-- Berkas konfigurasi ESLint: `.eslintrc.json`
-- Code convention: **Airbnb JavaScript Style Guide** (`eslint-config-airbnb` + `airbnb/hooks`)
-- `npm run lint` menghasilkan **0 error**
-- **React Strict Mode** aktif di `src/index.jsx`
+## 🚀 Skrip Perintah
 
-### Kriteria Utama 3 — Arsitektur Aplikasi
-- Seluruh state dari API disimpan di **Redux Store** (`src/states/`): `authUser`, `isPreload`,
-  `users`, `threads`, `threadDetail`, `leaderboards`, `categoryFilter`, `loadingBar`.
-- Tidak ada pemanggilan REST API di dalam komponen — semua request dibungkus **thunk**
-  (`src/states/**/action.js`) dan dipanggil lewat `dispatch`.
-- Pemisahan folder: **UI** di `src/components` & `src/pages`, **state** di `src/states`,
-  **utilitas/API** di `src/utils`.
-- Komponen modular & reusable (`VoteButton`, `ThreadItem`, `CommentItem`, dll).
-
-### Saran yang Diterapkan (target bintang 5)
-1. **Votes pada thread & komentar** — up/down vote, indikasi warna saat sudah vote,
-   jumlah votes, dan **Optimistically Apply Actions** (state diperbarui lebih dulu, di-rollback bila API gagal).
-2. **Leaderboard** — halaman `/leaderboards` menampilkan nama, avatar, dan score.
-3. **Filter thread berdasarkan kategori** — murni sisi front-end lewat manipulasi state Redux.
-
-## Struktur Folder
-
-```
-src/
-├── components/   # komponen UI reusable
-├── pages/        # halaman (route)
-├── hooks/        # custom hook (useInput)
-├── states/       # Redux: action, reducer, store
-├── styles/       # CSS
-└── utils/        # api.js + helper
-```
+- **Menjalankan Dev Server**: `npm run dev`
+- **Menjalankan Linter**: `npm run lint`
+- **Menjalankan Unit & Component Tests**: `npm test`
+- **Menjalankan E2E Tests (Cypress Headless)**: `npm run e2e`
+- **Membuka Cypress UI**: `npm run e2e:open`
+- **Menjalankan Storybook**: `npm run storybook`
+- **Build Storybook**: `npm run build-storybook`
+- **Build Production**: `npm run build`
