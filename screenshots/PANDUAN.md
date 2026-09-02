@@ -1,30 +1,24 @@
-# Panduan Screenshot Bukti Deployment & Branch Protection
+# Bukti Deployment & Branch Protection
 
-Dokumen ini berisi langkah mengambil **screenshot asli** dari antarmuka GitHub.
-Semua tangkapan layar harus diambil langsung dari browser pada halaman GitHub yang
-sesungguhnya — jangan menggunakan gambar hasil rekayasa atau mockup.
+Seluruh berkas di folder ini adalah **tangkapan layar asli** dari antarmuka GitHub,
+Terminal, dan aplikasi yang berjalan. Tidak ada gambar hasil rekayasa, mockup, atau
+render HTML. Isi tiap berkas diverifikasi ulang dengan OCR lewat
+`scripts/cek-screenshot.sh`.
 
-Simpan hasilnya di folder `screenshots/` dengan nama file persis seperti di bawah.
+## Daftar Bukti
 
----
+| Berkas | Sumber | Yang Dibuktikan |
+|---|---|---|
+| `1a_branch_protection.png` | `/settings/branch_protection_rules` | Rule `master` bagian atas: Require pull request, Require status checks, Require branches up to date |
+| `1b_branch_protection_lanjutan.png` | halaman rule yang sama (gulir bawah) | Required status check `test` (GitHub Actions), Require conversation resolution, **Do not allow bypassing the above settings** |
+| `2_push_rejected.png` | Terminal | Push langsung ke `master` **ditolak** GitHub dengan `GH006` |
+| `3_pull_request_checks.png` | `/pull/2/checks` | Status check `test` berhasil pada pull request |
+| `4_actions_workflow.png` | `/actions` | Riwayat workflow **Continuous Integration** hijau di branch `master` |
+| `5_deployment.png` | GitHub Pages | Aplikasi berjalan live |
 
-## 1. `1_branch_protection.png` — Konfigurasi Branch Protection
+## Konfigurasi Branch Protection Aktif
 
-**URL:** https://github.com/arighmt67-bit/forum-app-react-redux/settings/branches
-
-Pastikan yang terlihat dalam satu tangkapan layar:
-
-- Judul halaman **Branch protection rules**
-- Nama rule: `master`
-- Centang aktif pada:
-  - **Require a pull request before merging**
-  - **Require status checks to pass before merging**
-  - **Require branches to be up to date before merging**
-  - Status check yang dipilih: **test**
-  - **Do not allow bypassing the above settings** (enforce admins)
-- Bilah alamat browser yang memperlihatkan URL repositori
-
-Konfigurasi aktif saat ini (dapat diverifikasi lewat API):
+Dapat diverifikasi siapa pun dengan:
 
 ```bash
 gh api repos/arighmt67-bit/forum-app-react-redux/branches/master/protection
@@ -32,94 +26,45 @@ gh api repos/arighmt67-bit/forum-app-react-redux/branches/master/protection
 
 | Pengaturan | Nilai |
 |---|---|
-| `required_status_checks.strict` | `true` |
 | `required_status_checks.contexts` | `["test"]` |
-| `required_pull_request_reviews` | aktif, `dismiss_stale_reviews: true` |
+| `required_status_checks.strict` | `true` |
+| `required_pull_request_reviews` | aktif (`dismiss_stale_reviews: true`) |
 | `enforce_admins` | `true` |
+| `required_conversation_resolution` | `true` |
 | `allow_force_pushes` | `false` |
 | `allow_deletions` | `false` |
-| `required_conversation_resolution` | `true` |
 
----
+## Bukti Proteksi Benar-benar Bekerja
 
-## 2. `2_push_rejected.png` — Bukti Branch Protection Bekerja
-
-Jalankan perintah berikut di terminal, lalu ambil tangkapan layar terminalnya:
-
-```bash
-git checkout master
-git commit --allow-empty -m "chore: probe branch protection"
-git push origin master
-```
-
-Keluaran yang diharapkan (bukti penolakan oleh GitHub):
+Konfigurasi yang aktif belum tentu berfungsi. Karena itu proteksi diuji langsung —
+sebuah commit kosong dicoba di-push ke `master` dan **ditolak oleh GitHub**:
 
 ```
+$ git commit --allow-empty -m "chore: probe branch protection"
+$ git push origin master
+
 remote: error: GH006: Protected branch update failed for refs/heads/master.
 remote:
 remote: - Changes must be made through a pull request.
 remote:
 remote: - Required status check "test" is expected.
+To https://github.com/arighmt67-bit/forum-app-react-redux.git
  ! [remote rejected] master -> master (protected branch hook declined)
 ```
 
-Setelah selesai, batalkan commit percobaan tersebut:
+Commit percobaan dibatalkan setelahnya dengan `git reset --hard HEAD~1`.
+
+Pengujian ini dapat diulang kapan saja:
 
 ```bash
-git reset --hard HEAD~1
+bash scripts/bukti-push-ditolak.sh
 ```
 
----
-
-## 3. `3_pull_request_checks.png` — Status Check pada Pull Request
-
-**URL:** https://github.com/arighmt67-bit/forum-app-react-redux/pull/2
-
-Pastikan yang terlihat:
-
-- Judul pull request
-- Bagian **All checks have passed** dengan check `test` bertanda centang hijau
-- Keterangan **Required** di sebelah check `test`
-- Tombol **Merge pull request** dalam keadaan aktif (hijau)
-
----
-
-## 4. `4_actions_workflow.png` — Riwayat GitHub Actions
-
-**URL:** https://github.com/arighmt67-bit/forum-app-react-redux/actions
-
-Pastikan yang terlihat:
-
-- Daftar workflow run dengan status hijau pada run terakhir di branch `master`
-- Nama workflow **Continuous Integration**
-
----
-
-## 5. `5_deployment.png` — Aplikasi Ter-deploy
-
-**URL:** https://arighmt67-bit.github.io/forum-app-react-redux/
-
-Pastikan yang terlihat:
-
-- Aplikasi berjalan dan menampilkan daftar diskusi
-- Bilah alamat browser yang memperlihatkan URL deployment
-
----
-
-## Catatan
-
-Jangan menyertakan berkas `.env` ke dalam arsip ZIP submission. Gunakan perintah
-berikut untuk membuat arsip yang bersih:
+## Memverifikasi Ulang Kelengkapan Bukti
 
 ```bash
-npm run build
-zip -r submission.zip . \
-  -x "node_modules/*" "dist/*" "storybook-static/*" ".git/*" \
-     "cypress/videos/*" "cypress/screenshots/*" ".env" "*.zip"
+bash scripts/cek-screenshot.sh
 ```
 
-Verifikasi isi arsip sebelum dikirim:
-
-```bash
-unzip -l submission.zip | grep -E "\.env|node_modules" || echo "arsip bersih"
-```
+Script memeriksa keberadaan berkas, ukurannya, **dan** isinya lewat OCR — sehingga
+tangkapan layar yang salah halaman akan tertangkap sebelum ZIP dirakit.
